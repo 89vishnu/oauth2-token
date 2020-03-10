@@ -1,0 +1,14 @@
+plugins {
+    //id 'org.springframework.boot' version '' +${rootProject.ext.springBootVersion}
+    id 'org.springframework.boot' version '2.1.5.RELEASE' //+${rootProject.ext.springBootVersion}
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:${rootProject.ext.springBootVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}

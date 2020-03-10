@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  mongodb:
+    image: "096785992131.dkr.ecr.us-east-2.amazonaws.com/mongodb:latest"
+    build: mongo-db
+    restart: always
+
+  auth-service:
+    image: "096785992131.dkr.ecr.us-east-2.amazonaws.com/auth-service:latest"
+    build: auth-service
+
+  lesson-plans:
+    image: "096785992131.dkr.ecr.us-east-2.amazonaws.com/lesson-plans:latest"
+    build: lesson-plans
+
+  survey:
+    image: "096785992131.dkr.ecr.us-east-2.amazonaws.com/assessment:latest"
+    build: survey
+
+  api-gateway:
+    image: "096785992131.dkr.ecr.us-east-2.amazonaws.com/api-gateway:latest"
+    build: api-gateway
+
+networks:
+  webnet:
+    driver: bridge

@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  mongodb:
+    build: mongo-db
+    restart: always
+
+  auth-service:
+    image: ${DOCKER_REGISTRY}/auth-service
+    build: auth-service
+
+  lesson-plans:
+    image: ${DOCKER_REGISTRY}/lesson-plans
+    build: lesson-plans
+
+  survey:
+    image: ${DOCKER_REGISTRY}/survey
+    build: survey
+
+  api-gateway:
+    image: "096785992131.dkr.ecr.us-east-2.amazonaws.com/api-gateway:latest"
+    build: api-gateway
+
+networks:
+  webnet:
+    driver: bridge

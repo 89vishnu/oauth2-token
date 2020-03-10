@@ -1,0 +1,15 @@
+pluginManagement{
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'multiple-intillegence'
+
+include ':common-security'
+include ':user-service'
+include ':auth-service'
+include ':lesson-plans'
+include ':survey'
+include ':api-gateway'
+

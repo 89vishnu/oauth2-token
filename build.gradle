@@ -1,0 +1,130 @@
+plugins {
+    id 'jacoco'
+    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+}
+
+ext{
+    groovyVersion = '2.5.7'
+    swaggerVersion = '2.9.2'
+    logbackVersion = '1.1.7'
+    logbackContribVersion= '0.1.5'
+    javaxServletVersion = "4.0.1"
+    lombokVersion = '1.18.8'
+    spockVersion = "1.1-groovy-2.4"
+    springBootVersion = "2.1.5.RELEASE"
+    springDependencyVersion = "1.0.6.RELEASE"
+    springSecurity = "2.0.14.RELEASE"
+    junitVersion = "5.1.0"
+}
+
+allprojects {
+    group = 'com.miworld.mi'
+    version = '0.0.4-SNAPSHOT'
+
+
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+
+}
+
+
+
+subprojects{
+    apply plugin: 'groovy'
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'project-report'
+    apply plugin: 'jacoco'
+
+    sourceCompatibility = '1.8'
+
+
+    task allDeps(type:  DependencyReportTask) {}
+
+    libsDirName = '../build/libs/'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+//    jar {
+//        baseName = project.name
+//    }
+
+    task sourceJar(type: Jar){
+        from sourceSets.main.allJava
+        classifier = 'sources'
+    }
+
+    task javadocJar(type: Jar){
+        from javadoc
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication){
+                groupId = group
+                artifactId = project.name
+                version = version
+                from components.java
+                artifact sourceJar
+            }
+        }
+        repositories{
+
+        }
+    }
+
+    jacoco {
+        toolVersion = "0.8.3"
+        reportsDir = file("$buildDir/customJacocoReportDir")
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination file("${buildDir}/jacocoHtml")
+        }
+    }
+
+    test.finalizedBy jacocoTestReport
+
+//    dependencyManagement {
+//        imports {
+//            //mavenBom 'org.springframework.data:spring-data-releasetrain:Lovelace-SR8'
+//            mavenBom 'io.spring.platform:platform-bom:Cairo-SR7'
+//        }
+//    }
+
+    dependencies {
+        implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+        implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
+        implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+        implementation "ch.qos.logback.contrib:logback-json-classic:${logbackContribVersion}"
+        implementation "ch.qos.logback.contrib:logback-jackson:${logbackContribVersion}"
+        implementation "javax.servlet:javax.servlet-api:${javaxServletVersion}"
+
+        implementation "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testImplementation("org.spockframework:spock-spring:${spockVersion}"){
+            exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        }
+        testImplementation("org.spockframework:spock-core:${spockVersion}"){
+            exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        }
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    }
+
+}

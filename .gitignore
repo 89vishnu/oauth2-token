@@ -1,0 +1,20 @@
+*.class
+target/
+misc/
+node_modules/
+.gradle/
+build/
+**/.gradle/**
+
+# IntelliJ project files 
+*.iml
+*.iws
+*.ipr
+.idea/
+
+out/
+
+# eclipse project file
+.settings/
+.classpath
+.project
